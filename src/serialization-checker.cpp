@@ -34,12 +34,11 @@ private:
                     if (inner_raw && icmp && inner_raw->size() > 128 && icmp->length() == 0) {
                         return true;
                     }
-                    uint16_t old_checksum = udp ? udp->checksum() : 0;
-                    auto serialized = eth.serialize();
                     // Checksum was optional, now we set it to the right value, this is fine
-                    if (udp && udp->checksum() == 0xffff && old_checksum == 0) {
+                    if (udp && udp->checksum() == 0) {
                         return true;
                     }
+                    auto serialized = eth.serialize();
                     if (next->size() < 46) {
                         auto start_iter = buffer.begin() + 14 + next->size();
                         fill(start_iter, buffer.end(), 0);
